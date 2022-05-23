@@ -61,6 +61,7 @@ def handler(event, context):
 
     new_data.insert(len(new_data), eventBody["avg_glucose_level"])
     new_data.insert(len(new_data), eventBody["bmi"])
+    # print(new_data)
     with open('model_pkl', 'rb') as f:
         classifier = pickle.load(f)
     new_pred = classifier.predict([new_data])
