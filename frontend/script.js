@@ -8,7 +8,7 @@ var questions = [
   'Are you married? <p style="font-size:20px;">(Yes / No)</p>',
   'What is the nature of your employment?<p style="font-size:20px;">(Govt_job / Never_worked / Private / Self_employed / children)</p>',
   'What is your residence type?<p style="font-size:20px;">(Urban / Rural)</p>',
-  "Your avergare glucose level?",
+  "Your average glucose level?",
   "Your Body Mass Index(BMI)?",
   'How often you smoke?<p style="font-size:20px;">(formerly_smoked / never_smoked / smokes)</p>',
   "Loading...",
@@ -22,6 +22,7 @@ var postBody = {};
 var patient_name = "";
 
 function showResponse() {
+  // eslint-disable-next-line no-empty
   if (inputBox.value == "") {
   } else {
     if (num == 0) {
@@ -96,7 +97,7 @@ function showResponse() {
       postBody["smoking_status"] = inputBox.value;
       inputBox.value = "";
       ++num;
-      console.log(postBody);
+      console.log(JSON.stringify(postBody));
       changeQuestion();
     }
   }
@@ -104,7 +105,7 @@ function showResponse() {
 
 async function callAPI() {
   const response = await fetch(
-    "https://xmq5xza98f.execute-api.us-east-1.amazonaws.com",
+    "https://vh4w377ve5.execute-api.us-east-1.amazonaws.com",
     {
       method: "POST",
       headers: {
@@ -125,7 +126,11 @@ async function changeQuestion() {
   if (num == 11) {
     inputBox.style.display = "none";
     var pred_out = await callAPI();
-    output.innerHTML = `Hello, ${patient_name}! The prediction output is ${pred_out}`;
+    if (pred_out == 1) {
+      output.innerHTML = `<p> Hello, ${patient_name}! You have high chances of being effected with Angina, <br> Please consult your cardiologist immediately. </p>`;
+    } else {
+      output.innerHTML = `Hello, ${patient_name}! You are healthy and fit.`;
+    }
   }
 }
 
